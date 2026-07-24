@@ -1,0 +1,22 @@
+{% extends "portal/base.html" %}
+
+{% block content %}
+  <h1>Grades</h1>
+
+  <table>
+    <thead>
+      <tr><th>Course</th><th>Credits</th><th>Grade</th></tr>
+    </thead>
+    <tbody>
+      {% for e in enrollments %}
+        <tr>
+          <td>{{ e.course.code }} - {{ e.course.title }}</td>
+          <td>{{ e.course.credits }}</td>
+          <td>{{ e.grade }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3">No grades on record yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

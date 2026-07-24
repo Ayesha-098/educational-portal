@@ -1,0 +1,43 @@
+{% extends "portal/base.html" %}
+
+{% block content %}
+  <h1>Courses</h1>
+
+  <div class="card-grid">
+    {% for e in enrollments %}
+      <div class="course-card">
+        <h3>{{ e.course.code }}</h3>
+        <p>{{ e.course.title }} &middot; {{ e.course.credits }} credits
+          {% if e.course.teacher %}&middot; {{ e.course.teacher.user.get_full_name|default:e.course.teacher.user.username }}{% endif %}
+        </p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:{{ e.progress_percent }}%"></div>
+        </div>
+        <form method="post" action="{% url 'drop_course' e.id %}" style="margin-top:12px;">
+          {% csrf_token %}
+          <button type="submit" class="text-btn">Drop course</button>
+        </form>
+      </div>
+    {% empty %}
+      <p>You're not enrolled in any courses yet. Browse available courses below.</p>
+    {% endfor %}
+  </div>
+
+  <h3>Available Courses</h3>
+  <div class="card-grid">
+    {% for course in available_courses %}
+      <div class="course-card">
+        <h3>{{ course.code }}</h3>
+        <p>{{ course.title }} &middot; {{ course.credits }} credits
+          {% if course.teacher %}&middot; {{ course.teacher.user.get_full_name|default:course.teacher.user.username }}{% endif %}
+        </p>
+        <form method="post" action="{% url 'enroll_course' course.id %}">
+          {% csrf_token %}
+          <button type="submit">Enroll</button>
+        </form>
+      </div>
+    {% empty %}
+      <p>No other courses available right now.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

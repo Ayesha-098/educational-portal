@@ -1,0 +1,12 @@
+{% extends "portal/base.html" %}
+
+{% block content %}
+  <h1>Profile</h1>
+
+  <div class="profile-box">
+    <p><strong>Name:</strong> {{ student.user.get_full_name }}</p>
+    <p><strong>Student ID:</strong> {{ student.student_id }}</p>
+    <p><strong>Email:</strong> {{ student.user.email }}</p>
+    <p><strong>Major:</strong> {{ student.major }}</p>
+  </div>
+{% endblock %}

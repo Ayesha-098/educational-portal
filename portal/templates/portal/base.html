@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Portal</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'portal/logo.svg' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'portal/style.css' %}" />
+</head>
+<body>
+  <div id="app-page">
+
+    <aside class="sidebar">
+      <div class="logo-row">
+        <img src="{% static 'portal/logo.svg' %}" alt="" class="logo-mark" />
+        <h2 class="logo">Student Portal</h2>
+      </div>
+      <nav>
+        <a class="nav-btn {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">Dashboard</a>
+        <a class="nav-btn {% if request.resolver_match.url_name == 'courses' %}active{% endif %}" href="{% url 'courses' %}">Courses</a>
+        <a class="nav-btn {% if request.resolver_match.url_name == 'grades' %}active{% endif %}" href="{% url 'grades' %}">Grades</a>
+        <a class="nav-btn {% if request.resolver_match.url_name == 'assignments' %}active{% endif %}" href="{% url 'assignments' %}">Assignments</a>
+        <a class="nav-btn {% if request.resolver_match.url_name == 'attendance' %}active{% endif %}" href="{% url 'attendance' %}">Attendance</a>
+        <a class="nav-btn {% if request.resolver_match.url_name == 'schedule' %}active{% endif %}" href="{% url 'schedule' %}">Schedule</a>
+        <a class="nav-btn {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}">Profile</a>
+      </nav>
+
+      {% if current_student %}
+        <div class="sidebar-student">
+          <div class="sidebar-avatar">{{ current_student.user.first_name|slice:":1" }}{{ current_student.user.last_name|slice:":1" }}</div>
+          <div class="sidebar-student-info">
+            <div class="name">{{ current_student.user.get_full_name|default:current_student.user.username }}</div>
+            <div class="id">{{ current_student.student_id }}</div>
+          </div>
+        </div>
+      {% endif %}
+
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button id="logout-btn" type="submit">Log Out</button>
+      </form>
+    </aside>
+
+    <main class="content">
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <p class="message-banner">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+
+  </div>
+</body>
+</html>

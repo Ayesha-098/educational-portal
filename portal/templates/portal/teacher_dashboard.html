@@ -1,0 +1,34 @@
+{% extends "portal/teacher_base.html" %}
+
+{% block content %}
+  <h1>Welcome back, {{ teacher.user.first_name|default:teacher.user.username }}</h1>
+
+  <h3>Your Courses</h3>
+  <div class="card-grid">
+    {% for row in course_stats %}
+      <a href="{% url 'teacher_course_detail' row.course.id %}" class="course-card" style="display:block;">
+        <h3>{{ row.course.code }}</h3>
+        <p>{{ row.course.title }} &middot; {{ row.course.credits }} credits</p>
+        <p style="margin-top:-8px;">{{ row.student_count }} student{{ row.student_count|pluralize }} &middot; {{ row.assignment_count }} assignment{{ row.assignment_count|pluralize }}</p>
+      </a>
+    {% empty %}
+      <p>You're not teaching any courses yet. Create one below to get started.</p>
+    {% endfor %}
+  </div>
+
+  <h3>Create a New Course</h3>
+  <div class="assignment-card" style="max-width:420px;">
+    <form method="post" action="{% url 'create_course' %}">
+      {% csrf_token %}
+      {% for field in create_course_form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<p style="font-size:12px; color:var(--text-muted); margin-top:-8px; margin-bottom:12px;">{{ field.help_text }}</p>{% endif %}
+        {% for error in field.errors %}
+          <p style="color: var(--danger); font-size:12px; margin-top:-8px; margin-bottom:12px;">{{ error }}</p>
+        {% endfor %}
+      {% endfor %}
+      <button type="submit">Create Course</button>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "portal/teacher_base.html" %}
+
+{% block content %}
+  <h1>{{ assignment.title }}</h1>
+  <p class="due">{{ assignment.course.code }} &middot; {{ assignment.due_text }}</p>
+
+  {% for row in rows %}
+    <div class="assignment-card">
+      <h3>{{ row.enrollment.student.user.get_full_name|default:row.enrollment.student.user.username }}</h3>
+
+      {% if row.submission %}
+        <div class="submitted-note">
+          Submitted {{ row.submission.submitted_at }}
+          {% if row.submission.content %}<br>"{{ row.submission.content|truncatechars:150 }}"{% endif %}
+          {% if row.submission.file %}<br><a href="{{ row.submission.file.url }}" target="_blank">View uploaded file</a>{% endif %}
+        </div>
+
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="submission_id" value="{{ row.submission.id }}" />
+          <label for="grade-{{ row.submission.id }}">Grade</label>
+          <input type="text" id="grade-{{ row.submission.id }}" name="grade" value="{{ row.submission.grade }}" style="width:120px; display:block; margin-bottom:10px;" />
+          <label for="feedback-{{ row.submission.id }}">Feedback</label>
+          <textarea id="feedback-{{ row.submission.id }}" name="feedback">{{ row.submission.feedback }}</textarea>
+          <button type="submit">Save Grade</button>
+        </form>
+      {% else %}
+        <p class="due">No submission yet.</p>
+      {% endif %}
+    </div>
+  {% empty %}
+    <p>No students enrolled in this course.</p>
+  {% endfor %}
+{% endblock %}

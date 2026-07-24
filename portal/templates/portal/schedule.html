@@ -1,0 +1,22 @@
+{% extends "portal/base.html" %}
+
+{% block content %}
+  <h1>Weekly Schedule</h1>
+
+  <table>
+    <thead>
+      <tr><th>Day</th><th>Time</th><th>Course</th></tr>
+    </thead>
+    <tbody>
+      {% for slot in slots %}
+        <tr>
+          <td>{{ slot.get_day_display }}</td>
+          <td>{{ slot.time }}</td>
+          <td>{{ slot.course.code }} - {{ slot.course.title }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3">No classes scheduled yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

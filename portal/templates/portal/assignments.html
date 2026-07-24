@@ -1,0 +1,31 @@
+{% extends "portal/base.html" %}
+
+{% block content %}
+  <h1>Assignments</h1>
+
+  {% for row in rows %}
+    <div class="assignment-card">
+      <h3>{{ row.assignment.title }} <span style="color: var(--text-light); font-weight:normal;">({{ row.assignment.course.code }})</span></h3>
+      <p class="due">{{ row.assignment.due_text }}</p>
+
+      {% if row.submission %}
+        <div class="submitted-note">
+          <strong>Submitted</strong> on {{ row.submission.submitted_at }}
+          {% if row.submission.content %}<br>"{{ row.submission.content|truncatechars:120 }}"{% endif %}
+          {% if row.submission.file %}<br><a href="{{ row.submission.file.url }}" target="_blank">View uploaded file</a>{% endif %}
+        </div>
+        <p style="font-size:13px; color: var(--text-light); margin-top:8px;">You can resubmit below to replace it.</p>
+      {% endif %}
+
+      <form method="post" action="{% url 'submit_assignment' row.assignment.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name="content" placeholder="Write your submission here...">{% if row.submission %}{{ row.submission.content }}{% endif %}</textarea>
+        <input type="file" name="file" />
+        <br>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  {% empty %}
+    <p>No assignments yet.</p>
+  {% endfor %}
+{% endblock %}

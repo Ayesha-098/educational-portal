@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In - Student Portal</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'portal/logo.svg' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'portal/style.css' %}" />
+</head>
+<body>
+  <div id="login-page">
+    <form class="login-box" method="post">
+      {% csrf_token %}
+      <h1>Student Portal</h1>
+      <p class="subtitle">Sign in to continue</p>
+
+      {% if form.errors %}
+        <p style="color: var(--danger); font-size: 13px;">Incorrect username or password.</p>
+      {% endif %}
+
+      <label for="id_username">Student ID / Username</label>
+      <input type="text" name="username" id="id_username" placeholder="student1" />
+
+      <label for="id_password">Password</label>
+      <input type="password" name="password" id="id_password" placeholder="password123" />
+
+      <button type="submit">Log In</button>
+
+      <p class="subtitle" style="margin-top:16px;">
+        Demo login: <strong>student1</strong> / <strong>password123</strong>
+      </p>
+      <p class="subtitle">
+        New here? <a href="{% url 'signup' %}">Create an account</a>
+      </p>
+    </form>
+  </div>
+</body>
+</html>

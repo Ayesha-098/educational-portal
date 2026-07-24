@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Student Portal</title>
+  <link rel="icon" type="image/svg+xml" href="{% static 'portal/logo.svg' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'portal/style.css' %}" />
+</head>
+<body>
+  <div id="login-page">
+    <form class="login-box" method="post">
+      {% csrf_token %}
+      <h1>Create Account</h1>
+      <p class="subtitle">Join the Student Portal</p>
+
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <p style="color: var(--danger); font-size: 12px; margin-top:-14px; margin-bottom:14px;">{{ error }}</p>
+        {% endfor %}
+      {% endfor %}
+
+      <button type="submit">Create Account</button>
+
+      <p class="subtitle" style="margin-top:16px;">
+        Already have an account? <a href="{% url 'login' %}">Log in</a>
+      </p>
+    </form>
+  </div>
+</body>
+</html>

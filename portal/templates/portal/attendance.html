@@ -1,0 +1,17 @@
+{% extends "portal/base.html" %}
+
+{% block content %}
+  <h1>Attendance</h1>
+
+  {% for e in enrollments %}
+    <div class="attendance-card">
+      <h3>{{ e.course.code }} - {{ e.course.title }}</h3>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:{{ e.attendance_percent }}%"></div>
+      </div>
+      <p class="attendance-pct">{{ e.attendance_percent }}% present</p>
+    </div>
+  {% empty %}
+    <p>No attendance records yet.</p>
+  {% endfor %}
+{% endblock %}

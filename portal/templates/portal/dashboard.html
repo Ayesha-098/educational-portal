@@ -1,0 +1,33 @@
+{% extends "portal/base.html" %}
+
+{% block content %}
+  <h1>Welcome back, {{ student.user.first_name|default:student.user.username }}</h1>
+
+  <div class="stats">
+    <div class="stat-card">
+      <span class="stat-label">Courses</span>
+      <span class="stat-value">{{ enrollments|length }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Attendance</span>
+      <span class="stat-value">{{ avg_attendance }}%</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Credits</span>
+      <span class="stat-value">{{ total_credits }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Assignments Due</span>
+      <span class="stat-value">{{ assignments|length }}</span>
+    </div>
+  </div>
+
+  <h3>Upcoming Assignments</h3>
+  <ul class="simple-list">
+    {% for a in assignments %}
+      <li><span>{{ a.title }} ({{ a.course.code }})</span><span>{{ a.due_text }}</span></li>
+    {% empty %}
+      <li><span>No assignments due. Nice.</span></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
