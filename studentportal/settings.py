@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --- Security (fine for local/demo use, change SECRET_KEY before deploying) ---
 SECRET_KEY = "django-insecure-demo-key-change-me"
 DEBUG = True
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["educational-portal-production.up.railway.app",]
 
 # --- Apps ---
 INSTALLED_APPS = [
@@ -80,3 +80,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "post_login"
 LOGOUT_REDIRECT_URL = "login"
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://educational-portal-production.up.railway.app",
+]
